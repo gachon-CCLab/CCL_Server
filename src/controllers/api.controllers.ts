@@ -1,7 +1,7 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiService } from '@services/api.service';
 
-@Controller('api')
+@Controller('modality')
 export class ApiController {
   constructor(private ApiService: ApiService) {}
 
@@ -10,8 +10,18 @@ export class ApiController {
     return this.ApiService.printHello();
   }
 
-  @Get('/allUser')
+  @Get('/get/allUser')
   selectAllUsers() {
     return this.ApiService.selectAllUser();
+  }
+
+  @Post('/post/SensorData')
+  createUser(@Body() body) {
+    return this.ApiService.postSensorData(body);
+  }
+
+  @Get('/get/allSensorData')
+  selectAllSenorDate() {
+    return this.ApiService.selectAllSensorData();
   }
 }
