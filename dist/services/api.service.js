@@ -9,6 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApiService = void 0;
 const common_1 = require("@nestjs/common");
 const database_lib_1 = require("../libraries/database.lib");
+const logger_middleware_1 = require("../middlewares/logger.middleware");
 let ApiService = class ApiService {
     printHello() {
         return 'HelloWorld!';
@@ -22,6 +23,7 @@ let ApiService = class ApiService {
                 message: '모든 유저 DB 데이터를 출력합니다.',
                 dbResult,
             };
+            logger_middleware_1.Logger.info('text');
             return result;
         }
         catch (err) {
@@ -41,7 +43,7 @@ let ApiService = class ApiService {
             ]);
             const result = {
                 isSuccess: true,
-                stateCode: 200,
+                statusCode: 200,
                 message: '유저 DB 입력 성공',
             };
             return result;
@@ -49,7 +51,7 @@ let ApiService = class ApiService {
         catch (err) {
             const result = {
                 isSuccess: false,
-                stateCode: 400,
+                statusCode: 400,
                 message: '유저 입력 실패',
                 err,
             };
@@ -61,7 +63,7 @@ let ApiService = class ApiService {
             const dbResult = await database_lib_1.default.query(`SELECT * FROM tb_sensor`);
             const result = {
                 isSuccess: true,
-                stateCode: 200,
+                statusCode: 200,
                 message: '모든 sensor DB 데이터를 출력합니다.',
                 dbResult,
             };
@@ -70,7 +72,7 @@ let ApiService = class ApiService {
         catch (err) {
             const result = {
                 isSuccess: false,
-                stateCode: 400,
+                statusCode: 400,
                 message: 'api 호출 실패',
             };
             return result;

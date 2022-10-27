@@ -26,7 +26,9 @@
       "@routers/*": ["routers/*"],
       "@services/*": ["services/*"],
       "@utilities/*": ["utilities/*"],
-      "@pipes/*": ["pipes/*"]
+      "@pipes/*": ["pipes/*"],
+      "@dtos/*": ["dtos/*"],
+      "@middlewares/*": ["middlewares/*"]
     }
   }
 }

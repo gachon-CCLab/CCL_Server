@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import Database from '@libraries/database.lib';
+import { Logger } from '@middlewares/logger.middleware';
 
 @Injectable()
 export class ApiService {
@@ -17,6 +18,7 @@ export class ApiService {
         message: '모든 유저 DB 데이터를 출력합니다.',
         dbResult,
       };
+      Logger.info('text');
       return result;
     } catch (err: any) {
       console.log('api 호출 실패');
