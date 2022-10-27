@@ -22,10 +22,58 @@ let ApiService = class ApiService {
                 message: '모든 유저 DB 데이터를 출력합니다.',
                 dbResult,
             };
-            return dbResult;
+            return result;
         }
         catch (err) {
             console.log('api 호출 실패');
+        }
+    }
+    async postSensorData(postSensorDataDto) {
+        const { UserId, SensorData, BodyTemp, HeartRate, BreathRate } = postSensorDataDto;
+        try {
+            console.log('put sensordata 실행');
+            const dbResult = await database_lib_1.default.query(`INSERT INTO tb_sensor (UserId, SensorType, BodyTemp, HeartRate, BreathRate) VALUES (?, ?, ?, ?, ?); `, [
+                UserId,
+                SensorData,
+                BodyTemp,
+                HeartRate,
+                BreathRate
+            ]);
+            const result = {
+                isSuccess: true,
+                stateCode: 200,
+                message: '유저 DB 입력 성공',
+            };
+            return result;
+        }
+        catch (err) {
+            const result = {
+                isSuccess: false,
+                stateCode: 400,
+                message: '유저 입력 실패',
+                err,
+            };
+            return result;
+        }
+    }
+    async selectAllSensorData() {
+        try {
+            const dbResult = await database_lib_1.default.query(`SELECT * FROM tb_sensor`);
+            const result = {
+                isSuccess: true,
+                stateCode: 200,
+                message: '모든 sensor DB 데이터를 출력합니다.',
+                dbResult,
+            };
+            return result;
+        }
+        catch (err) {
+            const result = {
+                isSuccess: false,
+                stateCode: 400,
+                message: 'api 호출 실패',
+            };
+            return result;
         }
     }
 };

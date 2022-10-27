@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ApiService } from '@services/api.service';
+import { postSensorDataDto } from 'dtos/sensorData.dto';
 
 @Controller('modality')
 export class ApiController {
@@ -15,9 +16,12 @@ export class ApiController {
     return this.ApiService.selectAllUser();
   }
 
+  @UsePipes(ValidationPipe)
   @Post('/post/SensorData')
-  createUser(@Body() body) {
-    return this.ApiService.postSensorData(body);
+  createUser(
+    @Body() postSensorDataDto : postSensorDataDto
+  ) {
+    return this.ApiService.postSensorData(postSensorDataDto);
   }
 
   @Get('/get/allSensorData')

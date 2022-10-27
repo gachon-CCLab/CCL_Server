@@ -8,10 +8,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApiController = void 0;
 const common_1 = require("@nestjs/common");
 const api_service_1 = require("../services/api.service");
+const sensorData_dto_1 = require("../dtos/sensorData.dto");
 let ApiController = class ApiController {
     constructor(ApiService) {
         this.ApiService = ApiService;
@@ -22,6 +26,12 @@ let ApiController = class ApiController {
     selectAllUsers() {
         return this.ApiService.selectAllUser();
     }
+    createUser(postSensorDataDto) {
+        return this.ApiService.postSensorData(postSensorDataDto);
+    }
+    selectAllSenorDate() {
+        return this.ApiService.selectAllSensorData();
+    }
 };
 __decorate([
     (0, common_1.Get)(),
@@ -30,13 +40,27 @@ __decorate([
     __metadata("design:returntype", String)
 ], ApiController.prototype, "sayHello", null);
 __decorate([
-    (0, common_1.Get)('/allUser'),
+    (0, common_1.Get)('/get/allUser'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], ApiController.prototype, "selectAllUsers", null);
+__decorate([
+    (0, common_1.UsePipes)(common_1.ValidationPipe),
+    (0, common_1.Post)('/post/SensorData'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [sensorData_dto_1.postSensorDataDto]),
+    __metadata("design:returntype", void 0)
+], ApiController.prototype, "createUser", null);
+__decorate([
+    (0, common_1.Get)('/get/allSensorData'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], ApiController.prototype, "selectAllSenorDate", null);
 ApiController = __decorate([
-    (0, common_1.Controller)('api'),
+    (0, common_1.Controller)('modality'),
     __metadata("design:paramtypes", [api_service_1.ApiService])
 ], ApiController);
 exports.ApiController = ApiController;
