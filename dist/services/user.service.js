@@ -6,16 +6,29 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AppModule = void 0;
+exports.UsersService = void 0;
 const common_1 = require("@nestjs/common");
-const config_1 = require("@nestjs/config");
-const api_module_1 = require("./api.module");
-let AppModule = class AppModule {
+let UsersService = class UsersService {
+    constructor() {
+        this.users = [
+            {
+                userId: 1,
+                username: 'john',
+                password: 'changeme',
+            },
+            {
+                userId: 2,
+                username: 'maria',
+                password: 'guess',
+            },
+        ];
+    }
+    async findOne(username) {
+        return this.users.find(user => user.username === username);
+    }
 };
-AppModule = __decorate([
-    (0, common_1.Module)({
-        imports: [api_module_1.ApiModules, config_1.ConfigModule.forRoot()],
-    })
-], AppModule);
-exports.AppModule = AppModule;
-//# sourceMappingURL=app.module.js.map
+UsersService = __decorate([
+    (0, common_1.Injectable)()
+], UsersService);
+exports.UsersService = UsersService;
+//# sourceMappingURL=user.service.js.map
