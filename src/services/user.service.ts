@@ -1,24 +1,107 @@
 import { Injectable } from '@nestjs/common';
-
-// This should be a real class/interface representing a user entity
-export type User = any;
+import Database from '@libraries/database.lib';
+import { Logger } from '@middlewares/logger.middleware';
+import { constants } from 'buffer';
 
 @Injectable()
-export class UsersService {
-  private readonly users = [
-    {
-      userId: 1,
-      username: 'john',
-      password: 'changeme',
-    },
-    {
-      userId: 2,
-      username: 'maria',
-      password: 'guess',
-    },
-  ];
-
-  async findOne(username: string): Promise<User | undefined> {
-    return this.users.find(user => user.username === username);
+export class UserService {
+  public printHello(): string {
+    return 'HelloWorld!';
   }
+
+  // ------------------------------------- 모든 유저 DB 데이터 출력 api ----------------------------------------
+  public async selectAllUser(): Promise<any> {
+    try {
+      const dbResult: any = await Database.query(`SELECT * FROM USER`);
+      const result: any = {
+        isSuccess: true,
+        stateCode: 200,
+        message: '모든 유저 DB 데이터를 출력합니다.',
+        dbResult,
+      };
+      Logger.info('text');
+      return result;
+    } catch (err: any) {
+      console.log('api 호출 실패');
+    }
+  }
+  // ===================================== 모든 유저 DB 데이터 출력 api 끝 =======================================
+
+  // ------------------------------------- 센서 데이터 DB 입력 api -----------------------------------------------
+  public async postSensorData(postSensorDataDto) {
+    const { UserId, SensorData, BodyTemp, HeartRate, BreathRate } = postSensorDataDto;
+
+    try {
+      console.log('put sensordata 실행');
+      const dbResult: any = await Database.query(
+        `INSERT INTO tb_sensor (UserId, SensorType, BodyTemp, HeartRate, BreathRate) VALUES (?, ?, ?, ?, ?); `,
+        [
+          UserId,
+          SensorData,
+          BodyTemp,
+          HeartRate,
+          BreathRate
+        ],
+      );
+      const result: any = {
+        isSuccess: true,
+        statusCode: 200,
+        message: '유저 DB 입력 성공',
+      };
+      return result;
+    } catch (err: any) {
+      const result: any = {
+        isSuccess: false,
+        statusCode: 400,
+        message: '유저 입력 실패',
+        err,
+      };
+      return result;
+    }
+  }
+  // ===================================== 센서 데이터 DB 입력 api 끝 ============================================
+
+  // ------------------------------------- 모든 센서 DB 데이터 출력 api --------------------------------------------
+  public async selectAllSensorData() {
+    try {
+      const dbResult: any = await Database.query(`SELECT * FROM tb_sensor`);
+      const result: any = {
+        isSuccess: true,
+        statusCode: 200,
+        message: '모든 sensor DB 데이터를 출력합니다.',
+        dbResult,
+      };
+      return result;
+    } catch (err: any) {
+      const result: any = {
+        isSuccess: false,
+        statusCode: 400,
+        message: 'api 호출 실패',
+      };
+      return result;
+    }
+  }
+
+  // ------------------------------------- 모든 센서 DB 데이터 출력 api --------------------------------------------
+  public async getUserSensorData(query) {
+    try {
+      const dbResult: any = await Database.query(`SELECT * FROM tb_sensor where UserId = ?`, [query.id]);
+      const result: any = {
+        isSuccess: true,
+        statusCode: 200,
+        message: `Us`,
+        dbResult,
+      };
+      return result;
+    } catch (err: any) {
+      const result: any = {
+        isSuccess: false,
+        statusCode: 400,
+        message: 'api 호출 실패',
+      };
+      return result;
+    }
+    }
+  }
+   // ===================================== 모든 센서 DB 데이터 출력 api 끝 ============================================
 }

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { ApiModules } from './api.module';
+import { ApiModules } from './user.module';
 
 @Module({
   imports: [ApiModules, ConfigModule.forRoot()],
