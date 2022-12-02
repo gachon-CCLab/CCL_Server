@@ -29,7 +29,7 @@ export class UserController {
     return this.UserService.selectAllSensorData();
   }
 
-  @Get('/:id/userData')
+  @Get('/userSensorData/:id')
   getUserData(@Query() query) {
     return this.UserService.getUserSensorData(query);
   }

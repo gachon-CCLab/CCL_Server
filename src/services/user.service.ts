@@ -82,26 +82,44 @@ export class UserService {
     }
   }
 
-  // ------------------------------------- 모든 센서 DB 데이터 출력 api --------------------------------------------
+  // ------------------------------------- 특정 유저 센서 데이터 출력 api --------------------------------------------
   public async getUserSensorData(query) {
     try {
-      const dbResult: any = await Database.query(`SELECT * FROM tb_sensor where UserId = ?`, [query.id]);
+      const dbUserResult: any = await Database.query(
+        // `SELECT * 
+        // FROM user
+        // JOIN tb_sensor on tb_sensor.UserId = user.Uid
+        // WHERE user.Uid = `,
+        // [query.id]
+        
+        `SELECT Account, Name, Type, State
+        FROM user
+        WHERE Uid = ?`,
+        [query.id]
+      );
+
+      const dbSensorResult: any = await Database.query(
+        `SELECT * FROM tb_sensor WHERE UserId = ?`,
+        [query.id]
+      );
+
+
+
       const result: any = {
         isSuccess: true,
         statusCode: 200,
-        message: `Us`,
-        dbResult,
+        message: `${dbUserResult[0].Account} User's Sensor data are imported successfully`,
+        result: Object.assign(dbUserResult[0],{sensorData: dbSensorResult})
       };
       return result;
     } catch (err: any) {
       const result: any = {
         isSuccess: false,
         statusCode: 400,
-        message: 'api 호출 실패',
+        message: err.message,
       };
       return result;
     }
-    }
   }
-   // ===================================== 모든 센서 DB 데이터 출력 api 끝 ============================================
+   // ===================================== 특정 유저 DB 데이터 출력 api 끝 ============================================
 }

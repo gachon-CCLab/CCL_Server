@@ -1,5 +1,7 @@
-export declare type User = any;
-export declare class UsersService {
-    private readonly users;
-    findOne(username: string): Promise<User | undefined>;
+export declare class UserService {
+    printHello(): string;
+    selectAllUser(): Promise<any>;
+    postSensorData(postSensorDataDto: any): Promise<any>;
+    selectAllSensorData(): Promise<any>;
+    getUserSensorData(query: any): Promise<any>;
 }

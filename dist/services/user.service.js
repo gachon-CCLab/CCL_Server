@@ -6,29 +6,104 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UsersService = void 0;
+exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
-let UsersService = class UsersService {
-    constructor() {
-        this.users = [
-            {
-                userId: 1,
-                username: 'john',
-                password: 'changeme',
-            },
-            {
-                userId: 2,
-                username: 'maria',
-                password: 'guess',
-            },
-        ];
+const database_lib_1 = require("../libraries/database.lib");
+const logger_middleware_1 = require("../middlewares/logger.middleware");
+let UserService = class UserService {
+    printHello() {
+        return 'HelloWorld!';
     }
-    async findOne(username) {
-        return this.users.find(user => user.username === username);
+    async selectAllUser() {
+        try {
+            const dbResult = await database_lib_1.default.query(`SELECT * FROM USER`);
+            const result = {
+                isSuccess: true,
+                stateCode: 200,
+                message: '모든 유저 DB 데이터를 출력합니다.',
+                dbResult,
+            };
+            logger_middleware_1.Logger.info('text');
+            return result;
+        }
+        catch (err) {
+            console.log('api 호출 실패');
+        }
+    }
+    async postSensorData(postSensorDataDto) {
+        const { UserId, SensorData, BodyTemp, HeartRate, BreathRate } = postSensorDataDto;
+        try {
+            console.log('put sensordata 실행');
+            const dbResult = await database_lib_1.default.query(`INSERT INTO tb_sensor (UserId, SensorType, BodyTemp, HeartRate, BreathRate) VALUES (?, ?, ?, ?, ?); `, [
+                UserId,
+                SensorData,
+                BodyTemp,
+                HeartRate,
+                BreathRate
+            ]);
+            const result = {
+                isSuccess: true,
+                statusCode: 200,
+                message: '유저 DB 입력 성공',
+            };
+            return result;
+        }
+        catch (err) {
+            const result = {
+                isSuccess: false,
+                statusCode: 400,
+                message: '유저 입력 실패',
+                err,
+            };
+            return result;
+        }
+    }
+    async selectAllSensorData() {
+        try {
+            const dbResult = await database_lib_1.default.query(`SELECT * FROM tb_sensor`);
+            const result = {
+                isSuccess: true,
+                statusCode: 200,
+                message: '모든 sensor DB 데이터를 출력합니다.',
+                dbResult,
+            };
+            return result;
+        }
+        catch (err) {
+            const result = {
+                isSuccess: false,
+                statusCode: 400,
+                message: 'api 호출 실패',
+            };
+            return result;
+        }
+    }
+    async getUserSensorData(query) {
+        try {
+            const dbUserResult = await database_lib_1.default.query(`SELECT Account, Name, Type, State
+        FROM user
+        WHERE Uid = ?`, [query.id]);
+            const dbSensorResult = await database_lib_1.default.query(`SELECT * FROM tb_sensor WHERE UserId = ?`, [query.id]);
+            const result = {
+                isSuccess: true,
+                statusCode: 200,
+                message: `${dbUserResult[0].Account} User's Sensor data are imported successfully`,
+                result: Object.assign(dbUserResult[0], { sensorData: dbSensorResult })
+            };
+            return result;
+        }
+        catch (err) {
+            const result = {
+                isSuccess: false,
+                statusCode: 400,
+                message: err.message,
+            };
+            return result;
+        }
     }
 };
-UsersService = __decorate([
+UserService = __decorate([
     (0, common_1.Injectable)()
-], UsersService);
-exports.UsersService = UsersService;
+], UserService);
+exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map
