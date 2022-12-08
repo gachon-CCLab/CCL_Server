@@ -32,16 +32,43 @@ let UserService = class UserService {
         }
     }
     async postSensorData(postSensorDataDto) {
-        const { UserId, SensorData, BodyTemp, HeartRate, BreathRate } = postSensorDataDto;
+        const { RPID, SensorType, BodyTemp, HeartRate, BreathRate, Motion, HeartRate_rppg, BreathRate_rppg, SPO2 } = postSensorDataDto;
         try {
             console.log('put sensordata 실행');
-            const dbResult = await database_lib_1.default.query(`INSERT INTO tb_sensor (UserId, SensorType, BodyTemp, HeartRate, BreathRate) VALUES (?, ?, ?, ?, ?); `, [
-                UserId,
-                SensorData,
-                BodyTemp,
-                HeartRate,
-                BreathRate
-            ]);
+            const dbPreResult = await database_lib_1.default.query(`SELECT Uid FROM user WHERE RpId = '${RPID}'`);
+            if (dbPreResult[0] == undefined) {
+                const result = {
+                    isSuccess: false,
+                    statusCode: 400,
+                    message: `There is no user having RPID: ${RPID}`,
+                };
+                return result;
+            }
+            const Uid = dbPreResult[0].Uid;
+            await database_lib_1.default.query(`INSERT INTO tb_sensor 
+        (
+          UserId,
+          SensorType,
+          BodyTemp,
+          HeartRate,
+          BreathRate,
+          Motion,
+          HeartRate_rppg,
+          BreathRate_rppg,
+          SPO2
+        ) 
+        VALUES 
+        (
+          ${Uid},
+          ${SensorType},
+          ${BodyTemp},
+          ${HeartRate},
+          ${BreathRate},
+          ${Motion},
+          ${HeartRate_rppg},
+          ${BreathRate_rppg},
+          ${SPO2}
+        );`);
             const result = {
                 isSuccess: true,
                 statusCode: 200,
@@ -53,7 +80,7 @@ let UserService = class UserService {
             const result = {
                 isSuccess: false,
                 statusCode: 400,
-                message: '유저 입력 실패',
+                message: 'failure - Sensor post failed',
                 err,
             };
             return result;
@@ -119,6 +146,27 @@ let UserService = class UserService {
                 isSuccess: true,
                 statusCode: 200,
                 message: `User regeistered successfully`,
+            };
+            return result;
+        }
+        catch (err) {
+            const result = {
+                isSuccess: false,
+                statusCode: 400,
+                message: err.message,
+            };
+            return result;
+        }
+    }
+    async postUserRpid(userSendRpidDto) {
+        const { Uid, Rpid } = userSendRpidDto;
+        console.log(Uid, Rpid);
+        try {
+            await database_lib_1.default.query(`UPDATE user SET RpId = ${Rpid} WHERE (Uid = ${Uid})`);
+            const result = {
+                isSuccess: true,
+                statusCode: 200,
+                message: `User's RpId regeistered successfully`,
             };
             return result;
         }

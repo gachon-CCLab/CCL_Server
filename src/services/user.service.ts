@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Body, Injectable } from '@nestjs/common';
 import Database from '@libraries/database.lib';
 import { Logger } from '@middlewares/logger.middleware';
 import bcrypt from 'bcrypt';
+import { DbDefaults } from 'types/database';
 
 @Injectable()
 export class UserService {
@@ -30,19 +31,46 @@ export class UserService {
 
   // ------------------------------------- 센서 데이터 DB 입력 api -----------------------------------------------
   public async postSensorData(postSensorDataDto) {
-    const { UserId, SensorData, BodyTemp, HeartRate, BreathRate } = postSensorDataDto;
-
+    const { RPID, SensorType, BodyTemp, HeartRate, BreathRate, Motion, HeartRate_rppg, BreathRate_rppg, SPO2 } = postSensorDataDto;
     try {
       console.log('put sensordata 실행');
-      const dbResult: any = await Database.query(
-        `INSERT INTO tb_sensor (UserId, SensorType, BodyTemp, HeartRate, BreathRate) VALUES (?, ?, ?, ?, ?); `,
-        [
+      const dbPreResult: DbDefaults = await Database.query(`SELECT Uid FROM user WHERE RpId = '${RPID}'`);
+      if (dbPreResult[0] == undefined) {
+        const result: any = {
+          isSuccess: false,
+          statusCode: 400,
+          message: `There is no user having RPID: ${RPID}`,
+        };
+        return result;
+      }
+
+      const Uid = dbPreResult[0].Uid
+
+      await Database.query(
+        `INSERT INTO tb_sensor 
+        (
           UserId,
-          SensorData,
+          SensorType,
           BodyTemp,
           HeartRate,
-          BreathRate
-        ],
+          BreathRate,
+          Motion,
+          HeartRate_rppg,
+          BreathRate_rppg,
+          SPO2
+        ) 
+        VALUES 
+        (
+          ${Uid},
+          ${SensorType},
+          ${BodyTemp},
+          ${HeartRate},
+          ${BreathRate},
+          ${Motion},
+          ${HeartRate_rppg},
+          ${BreathRate_rppg},
+          ${SPO2}
+        );`
       );
       const result: any = {
         isSuccess: true,
@@ -54,7 +82,7 @@ export class UserService {
       const result: any = {
         isSuccess: false,
         statusCode: 400,
-        message: '유저 입력 실패',
+        message: 'failure - Sensor post failed',
         err,
       };
       return result;
@@ -158,6 +186,34 @@ export class UserService {
     }
   }
   // ------------------------------------- 회원가입 api 끝 --------------------------------------------
+
+
+  // ===================================== 유저 Rpid 등록 api ================================================
+  public async postUserRpid(userSendRpidDto) {
+    const { Uid, Rpid } = userSendRpidDto;
+    console.log(Uid, Rpid);
+
+    try {
+      await Database.query(`UPDATE user SET RpId = ${Rpid} WHERE (Uid = ${Uid})`);
+
+      const result: any = {
+        isSuccess: true,
+        statusCode: 200,
+        message: `User's RpId regeistered successfully`,
+      };
+      return result;
+    }
+    catch (err: any) {
+      const result: any = {
+        isSuccess: false,
+        statusCode: 400,
+        message: err.message,
+      };
+      return result;
+    }
+  }
+
+  // ------------------------------------- 유저 Rpid 등록 api 끝 --------------------------------------------
 
   public async findOneAccount(account: string) {
     console.log('findOneAccount 실행. account : '+ account +' ;;;');

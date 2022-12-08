@@ -1,3 +1,4 @@
+import { DbDefaults } from 'types/database';
 export declare class UserService {
     printHello(): string;
     selectAllUser(): Promise<any>;
@@ -5,5 +6,6 @@ export declare class UserService {
     selectAllSensorData(): Promise<any>;
     getUserSensorData(query: any): Promise<any>;
     join(JoinRequestDto: any): Promise<any>;
-    findOneAccount(account: string): Promise<import("../types/database").DbDefaults>;
+    postUserRpid(userSendRpidDto: any): Promise<any>;
+    findOneAccount(account: string): Promise<DbDefaults>;
 }
