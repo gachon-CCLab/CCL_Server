@@ -10,20 +10,36 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.JoinRequestDto = void 0;
+const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class JoinRequestDto {
 }
 __decorate([
+    (0, swagger_1.ApiProperty)({
+        example: 'Willi',
+        description: 'NickName of User',
+        required: true
+    }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
-    __metadata("design:type", Number)
+    __metadata("design:type", String)
 ], JoinRequestDto.prototype, "account", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({
+        example: '1111',
+        description: 'password (not hashed yet)',
+        required: true
+    }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], JoinRequestDto.prototype, "password", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({
+        example: 'William',
+        description: 'User`s real name',
+        required: true
+    }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)

@@ -28,13 +28,13 @@ export class UserController {
   // =======================================================================================
   @ApiOperation({ summary: 'Register user`s RPID' })
   @ApiParam({
-    name: 'Uid',
-    description: 'User`s Uid',
+    name: 'Rpid',
+    description: 'Raspberry Pi ID going to register',
     required: true,
   })
   @ApiParam({
-    name: 'Rpid',
-    description: 'Raspberry Pi ID going to register',
+    name: 'Uid',
+    description: 'User`s Uid',
     required: true,
   })
   @UsePipes(ValidationPipe)
@@ -47,38 +47,8 @@ export class UserController {
   @ApiOperation({ summary: 'Send RP sensor data to server vby RP`s unique ID - You need to register user`s RpId first in order to use' })
   @UsePipes(ValidationPipe)
   @ApiParam({
-    name: 'RPID',
-    description: 'RasberryPi`s unique id',
-    required: true,
-  })
-  @ApiParam({
-    name: 'SensorType',
-    description: 'Type of senosr',
-    required: true,
-  })
-  @ApiParam({
-    name: 'BodyTemp',
-    description: 'Body temperature',
-    required: true,
-  })
-  @ApiParam({
-    name: 'HeartRate',
-    description: 'Heart beat Rate',
-    required: true,
-  })
-  @ApiParam({
-    name: 'BreathRate',
-    description: 'Breath rate',
-    required: true,
-  })
-  @ApiParam({
-    name: 'Motion',
-    description: 'Motion type',
-    required: true,
-  })
-  @ApiParam({
-    name: 'HeartRate_rppg',
-    description: 'Heart beat rppg data',
+    name: 'SPO2',
+    description: 'SPO2 data',
     required: true,
   })
   @ApiParam({
@@ -87,10 +57,41 @@ export class UserController {
     required: true,
   })
   @ApiParam({
-    name: 'SPO2',
-    description: 'SPO2 data',
+    name: 'HeartRate_rppg',
+    description: 'Heart beat rppg data',
     required: true,
-  })  
+  })
+  @ApiParam({
+    name: 'Motion',
+    description: 'Motion type',
+    required: true,
+  })
+  @ApiParam({
+    name: 'BreathRate',
+    description: 'Breath rate',
+    required: true,
+  })
+  @ApiParam({
+    name: 'HeartRate',
+    description: 'Heart beat Rate',
+    required: true,
+  })
+  @ApiParam({
+    name: 'BodyTemp',
+    description: 'Body temperature',
+    required: true,
+  })
+  @ApiParam({
+    name: 'SensorType',
+    description: 'Type of senosr',
+    required: true,
+  })
+  @ApiParam({
+    name: 'RPID',
+    description: 'RasberryPi`s unique id',
+    required: true,
+  })
+
   @Post('/post/SensorData')
   createUser(@Body() postSensorDataDto : postSensorDataDto) {
     return this.UserService.postSensorData(postSensorDataDto);
@@ -118,8 +119,8 @@ export class UserController {
   // =======================================================================================
   @ApiOperation({ summary: 'Register new user!' })
   @ApiParam({
-    name: 'account',
-    description: 'User Account(Nickname)',
+    name: 'name',
+    description: 'User`s real name',
     required: true,
   })  
   @ApiParam({
@@ -128,8 +129,8 @@ export class UserController {
     required: true,
   })  
   @ApiParam({
-    name: 'name',
-    description: 'User`s real name',
+    name: 'account',
+    description: 'User Account(Nickname)',
     required: true,
   })  
   @UsePipes(ValidationPipe)

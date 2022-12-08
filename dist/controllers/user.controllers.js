@@ -62,13 +62,13 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Register user`s RPID' }),
     (0, swagger_1.ApiParam)({
-        name: 'Uid',
-        description: 'User`s Uid',
+        name: 'Rpid',
+        description: 'Raspberry Pi ID going to register',
         required: true,
     }),
     (0, swagger_1.ApiParam)({
-        name: 'Rpid',
-        description: 'Raspberry Pi ID going to register',
+        name: 'Uid',
+        description: 'User`s Uid',
         required: true,
     }),
     (0, common_1.UsePipes)(common_1.ValidationPipe),
@@ -82,38 +82,8 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Send RP sensor data to server vby RP`s unique ID - You need to register user`s RpId first in order to use' }),
     (0, common_1.UsePipes)(common_1.ValidationPipe),
     (0, swagger_1.ApiParam)({
-        name: 'RPID',
-        description: 'RasberryPi`s unique id',
-        required: true,
-    }),
-    (0, swagger_1.ApiParam)({
-        name: 'SensorType',
-        description: 'Type of senosr',
-        required: true,
-    }),
-    (0, swagger_1.ApiParam)({
-        name: 'BodyTemp',
-        description: 'Body temperature',
-        required: true,
-    }),
-    (0, swagger_1.ApiParam)({
-        name: 'HeartRate',
-        description: 'Heart beat Rate',
-        required: true,
-    }),
-    (0, swagger_1.ApiParam)({
-        name: 'BreathRate',
-        description: 'Breath rate',
-        required: true,
-    }),
-    (0, swagger_1.ApiParam)({
-        name: 'Motion',
-        description: 'Motion type',
-        required: true,
-    }),
-    (0, swagger_1.ApiParam)({
-        name: 'HeartRate_rppg',
-        description: 'Heart beat rppg data',
+        name: 'SPO2',
+        description: 'SPO2 data',
         required: true,
     }),
     (0, swagger_1.ApiParam)({
@@ -122,8 +92,38 @@ __decorate([
         required: true,
     }),
     (0, swagger_1.ApiParam)({
-        name: 'SPO2',
-        description: 'SPO2 data',
+        name: 'HeartRate_rppg',
+        description: 'Heart beat rppg data',
+        required: true,
+    }),
+    (0, swagger_1.ApiParam)({
+        name: 'Motion',
+        description: 'Motion type',
+        required: true,
+    }),
+    (0, swagger_1.ApiParam)({
+        name: 'BreathRate',
+        description: 'Breath rate',
+        required: true,
+    }),
+    (0, swagger_1.ApiParam)({
+        name: 'HeartRate',
+        description: 'Heart beat Rate',
+        required: true,
+    }),
+    (0, swagger_1.ApiParam)({
+        name: 'BodyTemp',
+        description: 'Body temperature',
+        required: true,
+    }),
+    (0, swagger_1.ApiParam)({
+        name: 'SensorType',
+        description: 'Type of senosr',
+        required: true,
+    }),
+    (0, swagger_1.ApiParam)({
+        name: 'RPID',
+        description: 'RasberryPi`s unique id',
         required: true,
     }),
     (0, common_1.Post)('/post/SensorData'),
@@ -155,8 +155,8 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Register new user!' }),
     (0, swagger_1.ApiParam)({
-        name: 'account',
-        description: 'User Account(Nickname)',
+        name: 'name',
+        description: 'User`s real name',
         required: true,
     }),
     (0, swagger_1.ApiParam)({
@@ -165,8 +165,8 @@ __decorate([
         required: true,
     }),
     (0, swagger_1.ApiParam)({
-        name: 'name',
-        description: 'User`s real name',
+        name: 'account',
+        description: 'User Account(Nickname)',
         required: true,
     }),
     (0, common_1.UsePipes)(common_1.ValidationPipe),

@@ -1,5 +1,5 @@
 export declare class JoinRequestDto {
-    account: number;
+    account: string;
     password: string;
     name: string;
 }
