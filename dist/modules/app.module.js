@@ -14,7 +14,7 @@ let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [user_module_1.ApiModules, config_1.ConfigModule.forRoot()],
+        imports: [user_module_1.UserModule, config_1.ConfigModule.forRoot()],
     })
 ], AppModule);
 exports.AppModule = AppModule;

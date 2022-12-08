@@ -13,9 +13,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
+const join_request_dto_1 = require("../dtos/join.request.dto");
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("../services/user.service");
-const sensorData_dto_1 = require("../dtos/sensorData.dto");
+const sensor_data_dto_1 = require("../dtos/sensor.data.dto");
 let UserController = class UserController {
     constructor(UserService) {
         this.UserService = UserService;
@@ -35,6 +36,9 @@ let UserController = class UserController {
     getUserData(query) {
         return this.UserService.getUserSensorData(query);
     }
+    join(JoinRequestDto) {
+        return this.UserService.join(JoinRequestDto);
+    }
 };
 __decorate([
     (0, common_1.Get)(),
@@ -53,7 +57,7 @@ __decorate([
     (0, common_1.Post)('/post/SensorData'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [sensorData_dto_1.postSensorDataDto]),
+    __metadata("design:paramtypes", [sensor_data_dto_1.postSensorDataDto]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "createUser", null);
 __decorate([
@@ -69,6 +73,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "getUserData", null);
+__decorate([
+    (0, common_1.UsePipes)(common_1.ValidationPipe),
+    (0, common_1.Post)('/join'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [join_request_dto_1.JoinRequestDto]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "join", null);
 UserController = __decorate([
     (0, common_1.Controller)('modality'),
     __metadata("design:paramtypes", [user_service_1.UserService])

@@ -12,6 +12,7 @@ const database_lib_1 = require("../libraries/database.lib");
 const logger_middleware_1 = require("../middlewares/logger.middleware");
 let UserService = class UserService {
     printHello() {
+        this.findOneAccount('jm');
         return 'HelloWorld!';
     }
     async selectAllUser() {
@@ -100,6 +101,41 @@ let UserService = class UserService {
             };
             return result;
         }
+    }
+    async join(JoinRequestDto) {
+        const { account, password, name } = JoinRequestDto;
+        try {
+            const dbPreResult = await database_lib_1.default.query(`SELECT Account FROM user WHERE Account = '${account}'`);
+            if (dbPreResult != '') {
+                const result = {
+                    isSuccess: false,
+                    statusCode: 400,
+                    message: `User ${dbPreResult[0].Account} is already registered`,
+                };
+                return result;
+            }
+            const dbResult = await database_lib_1.default.query(`INSERT INTO user (Account, Password, Name) VALUES(?, ?, ?)`, [account, password, name]);
+            const result = {
+                isSuccess: true,
+                statusCode: 200,
+                message: `User regeistered successfully`,
+            };
+            return result;
+        }
+        catch (err) {
+            const result = {
+                isSuccess: false,
+                statusCode: 400,
+                message: err.message,
+            };
+            return result;
+        }
+    }
+    async findOneAccount(account) {
+        console.log('findOneAccount 실행. account : ' + account + ' ;;;');
+        const dbResult = await database_lib_1.default.query(`SELECT * FROM user WHERE Account = '${account}'`);
+        console.log('findOne DBreturn : ' + dbResult[0] + " ;;;");
+        return dbResult;
     }
 };
 UserService = __decorate([

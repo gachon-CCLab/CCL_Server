@@ -6,4 +6,4 @@ import { UserService } from '@services/user.service';
   providers: [UserService],
   controllers: [UserController],
 })
-export class ApiModules {}
+export class UserModule {}

@@ -1,2 +1,2 @@
-export declare class ApiModules {
+export declare class UserModule {
 }
