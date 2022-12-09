@@ -33,7 +33,6 @@ export class UserService {
   public async postSensorData(postSensorDataDto) {
     const { RPID, BodyTemp, HeartRate, BreathRate, Motion, HeartRate_rppg, BreathRate_rppg, SPO2 } = postSensorDataDto;
     try {
-      console.log('put sensordata 실행');
       const dbPreResult: DbDefaults = await Database.query(`SELECT Uid FROM user WHERE RpId = '${RPID}'`);
       if (dbPreResult[0] == undefined) {
         const result: any = {
@@ -78,7 +77,7 @@ export class UserService {
       console.log(`Sensor Data sent: Uid = ${Uid}, Rpid = ${RPID}, HeartRate = ${HeartRate}, BodyTemp = ${BodyTemp}`);
       return result;
     } catch (err: any) {
-      console.log(`!!!@ Sensor Data sending fail : \n err message : \n ${err.message}`);
+      console.log(`!!!@ Sensor Data sending fail. err message : ${err.message}`);
       const result: any = {
         isSuccess: false,
         statusCode: 400,
@@ -178,7 +177,7 @@ export class UserService {
         return result;
       }
     catch (err: any) {
-      console.log(`!!!User ${account} filed registered \n err Mesage: \n ${err.message}`);
+      console.log(`!!!User ${account} filed registered. err Mesage : ${err.message}`);
       const result: any = {
         isSuccess: false,
         statusCode: 400,
@@ -206,7 +205,7 @@ export class UserService {
       return result;
     }
     catch (err: any) {
-      console.log(`!!! RPID Wrap failed : UserId - ${Uid}, RpId - ${Rpid} \n err message : ${err.message}`);
+      console.log(`!!! RPID Wrap failed : UserId - ${Uid}, RpId - ${Rpid}. err message : ${err.message}`);
       const result: any = {
         isSuccess: false,
         statusCode: 400,

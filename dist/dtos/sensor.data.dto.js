@@ -26,16 +26,6 @@ __decorate([
 ], postSensorDataDto.prototype, "RPID", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        example: 0,
-        description: 'Type of Sensor: 0 or 1 - (Not implemented yet)',
-        required: true
-    }),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
-], postSensorDataDto.prototype, "SensorType", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({
         example: 36.5,
         description: 'Body Temperature',
         required: true

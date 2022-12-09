@@ -1,6 +1,5 @@
 export declare class postSensorDataDto {
     RPID: string;
-    SensorType: number;
     BodyTemp: number;
     HeartRate: number;
     BreathRate: number;
