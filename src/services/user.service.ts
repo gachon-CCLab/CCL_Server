@@ -31,7 +31,7 @@ export class UserService {
 
   // ------------------------------------- 센서 데이터 DB 입력 api -----------------------------------------------
   public async postSensorData(postSensorDataDto) {
-    const { RPID, SensorType, BodyTemp, HeartRate, BreathRate, Motion, HeartRate_rppg, BreathRate_rppg, SPO2 } = postSensorDataDto;
+    const { RPID, BodyTemp, HeartRate, BreathRate, Motion, HeartRate_rppg, BreathRate_rppg, SPO2 } = postSensorDataDto;
     try {
       console.log('put sensordata 실행');
       const dbPreResult: DbDefaults = await Database.query(`SELECT Uid FROM user WHERE RpId = '${RPID}'`);
@@ -50,7 +50,6 @@ export class UserService {
         `INSERT INTO tb_sensor 
         (
           UserId,
-          SensorType,
           BodyTemp,
           HeartRate,
           BreathRate,
@@ -62,7 +61,6 @@ export class UserService {
         VALUES 
         (
           ${Uid},
-          ${SensorType},
           ${BodyTemp},
           ${HeartRate},
           ${BreathRate},
@@ -77,8 +75,10 @@ export class UserService {
         statusCode: 200,
         message: '유저 DB 입력 성공',
       };
+      console.log(`Sensor Data sent: Uid = ${Uid}, Rpid = ${RPID}, HeartRate = ${HeartRate}, BodyTemp = ${BodyTemp}`);
       return result;
     } catch (err: any) {
+      console.log(`!!!@ Sensor Data sending fail : \n err message : \n ${err.message}`);
       const result: any = {
         isSuccess: false,
         statusCode: 400,
@@ -174,9 +174,11 @@ export class UserService {
           statusCode: 200,
           message: `User regeistered successfully`,
         };
+        console.log(`User ${account} registered`);
         return result;
       }
     catch (err: any) {
+      console.log(`!!!User ${account} filed registered \n err Mesage: \n ${err.message}`);
       const result: any = {
         isSuccess: false,
         statusCode: 400,
@@ -191,7 +193,6 @@ export class UserService {
   // ===================================== 유저 Rpid 등록 api ================================================
   public async postUserRpid(userSendRpidDto) {
     const { Uid, Rpid } = userSendRpidDto;
-    console.log(Uid, Rpid);
 
     try {
       await Database.query(`UPDATE user SET RpId = ${Rpid} WHERE (Uid = ${Uid})`);
@@ -201,9 +202,11 @@ export class UserService {
         statusCode: 200,
         message: `User's RpId regeistered successfully`,
       };
+      console.log(`RPID Wrap completed : UserId - ${Uid}, RpId - ${Rpid}`);
       return result;
     }
     catch (err: any) {
+      console.log(`!!! RPID Wrap failed : UserId - ${Uid}, RpId - ${Rpid} \n err message : ${err.message}`);
       const result: any = {
         isSuccess: false,
         statusCode: 400,

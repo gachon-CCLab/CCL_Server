@@ -16,15 +16,6 @@ export class postSensorDataDto {
     RPID: string;
 
     @ApiProperty({
-        example: 0,
-        description: 'Type of Sensor: 0 or 1 - (Not implemented yet)',
-        required: true
-    })
-    @IsNotEmpty()
-    @IsNumber()
-    SensorType: number;
-
-    @ApiProperty({
         example: 36.5,
         description: 'Body Temperature',
         required: true
