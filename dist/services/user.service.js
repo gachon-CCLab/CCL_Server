@@ -181,6 +181,46 @@ let UserService = class UserService {
             return result;
         }
     }
+    async userLogin(userLoginDto) {
+        const { account, password } = userLoginDto;
+        try {
+            const dbPreResult = await database_lib_1.default.query(`Select * FROM USER WHERE Account = '${account}'`);
+            if (dbPreResult[0] == undefined) {
+                const result = {
+                    isSuccess: false,
+                    statusCode: 400,
+                    message: `There is no account : ${account}`,
+                };
+                return result;
+            }
+            if (dbPreResult[0].Password != password) {
+                const result = {
+                    isSuccess: false,
+                    statusCode: 400,
+                    message: `Check your password again!`,
+                };
+                return result;
+            }
+            delete dbPreResult[0].Password;
+            console.log(`Account ${account} login success`);
+            const result = {
+                isSuccess: true,
+                statusCode: 200,
+                message: `Account ${account} login success`,
+                result: dbPreResult[0]
+            };
+            return result;
+        }
+        catch (err) {
+            console.log(`Account ${account} login failed. Errmessage : ${err.message}`);
+            const result = {
+                isSuccess: false,
+                statusCode: 400,
+                message: err.message,
+            };
+            return result;
+        }
+    }
     async findOneAccount(account) {
         console.log('findOneAccount 실행. account : ' + account + ' ;;;');
         const dbResult = await database_lib_1.default.query(`SELECT * FROM user WHERE Account = '${account}'`);

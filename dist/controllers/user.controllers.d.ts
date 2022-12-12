@@ -2,6 +2,7 @@ import { JoinRequestDto } from '@dtos/join.request.dto';
 import { UserService } from '@services/user.service';
 import { postSensorDataDto } from '@dtos/sensor.data.dto';
 import { userSendRpidDto } from '@dtos/user.send.rpid.dto';
+import { userLoginDto } from '@dtos/user.login.dto';
 export declare class UserController {
     private UserService;
     constructor(UserService: UserService);
@@ -12,4 +13,5 @@ export declare class UserController {
     selectAllSenorDate(): Promise<any>;
     getUserData(query: any): Promise<any>;
     join(JoinRequestDto: JoinRequestDto): Promise<any>;
+    userLogin(userLoginDto: userLoginDto): Promise<any>;
 }

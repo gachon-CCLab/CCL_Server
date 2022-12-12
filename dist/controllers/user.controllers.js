@@ -18,6 +18,7 @@ const common_1 = require("@nestjs/common");
 const user_service_1 = require("../services/user.service");
 const sensor_data_dto_1 = require("../dtos/sensor.data.dto");
 const user_send_rpid_dto_1 = require("../dtos/user.send.rpid.dto");
+const user_login_dto_1 = require("../dtos/user.login.dto");
 const swagger_1 = require("@nestjs/swagger");
 let UserController = class UserController {
     constructor(UserService) {
@@ -43,6 +44,9 @@ let UserController = class UserController {
     }
     join(JoinRequestDto) {
         return this.UserService.join(JoinRequestDto);
+    }
+    userLogin(userLoginDto) {
+        return this.UserService.userLogin((userLoginDto));
     }
 };
 __decorate([
@@ -176,6 +180,26 @@ __decorate([
     __metadata("design:paramtypes", [join_request_dto_1.JoinRequestDto]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "join", null);
+__decorate([
+    (0, swagger_1.ApiParam)({
+        name: 'account',
+        description: 'User`s account',
+        example: 'james_0124',
+        required: true,
+    }),
+    (0, swagger_1.ApiParam)({
+        name: 'password',
+        description: 'password',
+        example: '********',
+        required: true,
+    }),
+    (0, common_1.UsePipes)(common_1.ValidationPipe),
+    (0, common_1.Post)('/login'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_login_dto_1.userLoginDto]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "userLogin", null);
 UserController = __decorate([
     (0, swagger_1.ApiTags)('USER'),
     (0, common_1.Controller)('modality'),

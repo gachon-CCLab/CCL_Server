@@ -4,6 +4,7 @@ import { UserService } from '@services/user.service';
 
 import { postSensorDataDto } from '@dtos/sensor.data.dto';
 import { userSendRpidDto } from '@dtos/user.send.rpid.dto';
+import { userLoginDto } from '@dtos/user.login.dto';
 import { ApiOperation, ApiParam, ApiProperty, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('USER')
@@ -138,4 +139,24 @@ export class UserController {
   join(@Body() JoinRequestDto: JoinRequestDto) {
     return this.UserService.join(JoinRequestDto);
   }
+
+      // =======================================================================================
+
+      @ApiParam({
+        name: 'account',
+        description: 'User`s account',
+        example: 'james_0124',
+        required: true,
+      })  
+      @ApiParam({
+        name: 'password',
+        description: 'password',
+        example: '********',
+        required: true,
+      })  
+      @UsePipes(ValidationPipe)
+      @Post('/login')
+      userLogin(@Body()  userLoginDto : userLoginDto) {
+        return this.UserService.userLogin((userLoginDto));
+      }
 }

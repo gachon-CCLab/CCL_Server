@@ -217,6 +217,52 @@ export class UserService {
 
   // ------------------------------------- 유저 Rpid 등록 api 끝 --------------------------------------------
 
+   // ===================================== 유저 login api ================================================
+   public async userLogin(userLoginDto) {
+    const { account, password} = userLoginDto;
+
+    try {
+      const dbPreResult = await Database.query(`Select * FROM USER WHERE Account = '${account}'`);
+      if (dbPreResult[0] == undefined) {
+        const result: any = {
+          isSuccess: false,
+          statusCode: 400,
+          message: `There is no account : ${account}`,
+        };
+        return result;
+      }
+      if (dbPreResult[0].Password != password) {
+        const result: any = {
+          isSuccess: false,
+          statusCode: 400,
+          message: `Check your password again!`,
+        };
+        return result;
+      }
+
+      delete dbPreResult[0].Password;
+      console.log(`Account ${account} login success`);
+      const result: any = {
+        isSuccess: true,
+        statusCode: 200,
+        message: `Account ${account} login success`,
+        result: dbPreResult[0]
+      };
+      return result;
+    }
+    catch (err) {
+      console.log(`Account ${account} login failed. Errmessage : ${err.message}`);
+      const result: any = {
+        isSuccess: false,
+        statusCode: 400,
+        message: err.message,
+      };
+      return result;
+    }
+  }
+
+  // ------------------------------------- 유저 login api 끝 --------------------------------------------
+
   public async findOneAccount(account: string) {
     console.log('findOneAccount 실행. account : '+ account +' ;;;');
     const dbResult = await Database.query(`SELECT * FROM user WHERE Account = '${account}'`);

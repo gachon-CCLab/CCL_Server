@@ -7,5 +7,6 @@ export declare class UserService {
     getUserSensorData(query: any): Promise<any>;
     join(JoinRequestDto: any): Promise<any>;
     postUserRpid(userSendRpidDto: any): Promise<any>;
+    userLogin(userLoginDto: any): Promise<any>;
     findOneAccount(account: string): Promise<DbDefaults>;
 }
