@@ -31,7 +31,7 @@ __decorate([
         required: true
     }),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], userSendRpidDto.prototype, "Rpid", void 0);
 exports.userSendRpidDto = userSendRpidDto;
