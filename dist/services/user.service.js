@@ -107,9 +107,11 @@ let UserService = class UserService {
     }
     async getUserSensorData(query) {
         try {
-            const dbUserResult = await database_lib_1.default.query(`SELECT Account, Name, Type, State
+            const dbUserResult = await database_lib_1.default.query(`SELECT *
         FROM user
         WHERE Uid = ?`, [query.id]);
+            delete dbUserResult[0].Password;
+            delete dbUserResult[0].DelDate;
             const dbSensorResult = await database_lib_1.default.query(`SELECT * FROM tb_sensor WHERE UserId = ?`, [query.id]);
             const result = {
                 isSuccess: true,
@@ -162,7 +164,26 @@ let UserService = class UserService {
     async postUserRpid(userSendRpidDto) {
         const { Uid, Rpid } = userSendRpidDto;
         try {
-            await database_lib_1.default.query(`UPDATE user SET RpId = ${Rpid} WHERE (Uid = ${Uid})`);
+            const dbPreResult = await database_lib_1.default.query(`SELECT Uid, Rpid FROM user where Uid = ${Uid} || RpId = "${Rpid}"`);
+            if (dbPreResult.length == 0) {
+                const result = {
+                    isSuccess: false,
+                    statusCode: 400,
+                    message: `There is no user Uid :  ${Uid}`
+                };
+                return result;
+            }
+            for (const i in dbPreResult) {
+                if (dbPreResult[i].Rpid == Rpid) {
+                    const result = {
+                        isSuccess: false,
+                        statusCode: 400,
+                        message: `RpId ${Rpid} is already used`
+                    };
+                    return result;
+                }
+            }
+            database_lib_1.default.query(`UPDATE user SET RpId = ${Rpid} WHERE (Uid = ${Uid})`);
             const result = {
                 isSuccess: true,
                 statusCode: 200,

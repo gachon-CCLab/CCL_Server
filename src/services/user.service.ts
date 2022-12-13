@@ -3,6 +3,7 @@ import Database from '@libraries/database.lib';
 import { Logger } from '@middlewares/logger.middleware';
 import bcrypt from 'bcrypt';
 import { DbDefaults } from 'types/database';
+import { ConfigModule } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
@@ -120,11 +121,14 @@ export class UserService {
         // WHERE user.Uid = `,
         // [query.id]
         
-        `SELECT Account, Name, Type, State
+        `SELECT *
         FROM user
         WHERE Uid = ?`,
         [query.id]
       );
+
+      delete dbUserResult[0].Password;
+      delete dbUserResult[0].DelDate;
 
       const dbSensorResult: any = await Database.query(
         `SELECT * FROM tb_sensor WHERE UserId = ?`,
@@ -192,10 +196,32 @@ export class UserService {
   // ===================================== 유저 Rpid 등록 api ================================================
   public async postUserRpid(userSendRpidDto) {
     const { Uid, Rpid } = userSendRpidDto;
-
     try {
-      await Database.query(`UPDATE user SET RpId = ${Rpid} WHERE (Uid = ${Uid})`);
+      const dbPreResult: any = await Database.query(`SELECT Uid, Rpid FROM user where Uid = ${Uid} || RpId = "${Rpid}"`);
+      // DB 출력값이 없으면 유저가 없는 경우. 유저가 없을 경우 Validation
+      if (dbPreResult.length == 0) {
+        const result: any = {
+          isSuccess: false,
+          statusCode: 400,
+          message: `There is no user Uid :  ${Uid}`
+        };
+        return result;
+      }
 
+      // 출력된 모든 값에 RpId 검사. RpId가 이미 사용중인 값이라면 Validation
+      for (const i in dbPreResult) {
+        if (dbPreResult[i].Rpid == Rpid) {
+          const result: any = {
+            isSuccess: false,
+            statusCode: 400,
+            message: `RpId ${Rpid} is already used`
+          };
+          return result;
+        }
+      }
+
+      // Validation이 끝났으면 DB에 입력
+      Database.query(`UPDATE user SET RpId = ${Rpid} WHERE (Uid = ${Uid})`);
       const result: any = {
         isSuccess: true,
         statusCode: 200,
