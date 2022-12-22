@@ -1,16 +1,22 @@
-import { JoinRequestDto } from '@dtos/join.request.dto';
+import { JoinRequestDto } from '@controllers/dtos/user.dtos/join.request.dto';
 import { Body, Controller, Get, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { UserService } from '@services/user.service';
 
-import { postSensorDataDto } from '@dtos/sensor.data.dto';
-import { userSendRpidDto } from '@dtos/user.send.rpid.dto';
-import { userLoginDto } from '@dtos/user.login.dto';
+import { postSensorDataDto } from '@controllers/dtos/user.dtos/sensor.data.dto';
+import { userSendRpidDto } from '@controllers/dtos/user.dtos/user.send.rpid.dto';
+import { LoginDto } from './dtos/auth.dtos/login.dto';
 import { ApiOperation, ApiParam, ApiProperty, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('USER')
 @Controller('modality')
 export class UserController {
   constructor(private UserService: UserService) {}
+  // =======================================================================================
+  @Get('/test')
+  test(): any {
+    return this.UserService.test();
+  }
+  
 
   // =======================================================================================
   @ApiOperation({ summary: 'Testing Server Connectin - It returns "HelloWorld!!"' })
@@ -155,7 +161,7 @@ export class UserController {
   })  
   @UsePipes(ValidationPipe)
   @Post('/login')
-  userLogin(@Body()  userLoginDto : userLoginDto) {
+  userLogin(@Body()  userLoginDto : LoginDto) {
     return this.UserService.userLogin((userLoginDto));
   }
 }

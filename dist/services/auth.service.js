@@ -11,24 +11,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
+const jwt_1 = require("@nestjs/jwt");
 const user_service_1 = require("./user.service");
 let AuthService = class AuthService {
-    constructor(usersService) {
-        this.usersService = usersService;
+    constructor(UserService, JwtService) {
+        this.UserService = UserService;
+        this.JwtService = JwtService;
     }
     async validateUser(account, password) {
-        const dbData = await this.usersService.findOneAccount(account);
-        let result = dbData[0];
-        console.log('ValodatorUserResult : ' + result + ' ;;;');
-        if (result != undefined && result.Password == password) {
-            return result;
-        }
+        console.log('AuthService - validateUser 실행');
+        let userData = await this.UserService.findOneByAccount(account);
+        console.log('ValodatorUserResult :');
+        console.log(userData);
         return null;
+    }
+    async jwtLogin(LoginDto) {
+        console.log('AuthService - jwtLogin 실행');
+        const payload = { account: LoginDto.account, password: LoginDto.password };
+        console.log(payload);
+        console.log('실행');
+        return {
+            acess_token: this.JwtService.sign(payload),
+        };
     }
 };
 AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [user_service_1.UserService])
+    __metadata("design:paramtypes", [user_service_1.UserService,
+        jwt_1.JwtService])
 ], AuthService);
 exports.AuthService = AuthService;
 //# sourceMappingURL=auth.service.js.map

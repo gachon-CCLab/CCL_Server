@@ -1,14 +1,18 @@
-import { Body, Injectable } from '@nestjs/common';
+import { Body, Delete, Injectable } from '@nestjs/common';
 import Database from '@libraries/database.lib';
 import { Logger } from '@middlewares/logger.middleware';
 import bcrypt from 'bcrypt';
 import { DbDefaults } from 'types/database';
 import { ConfigModule } from '@nestjs/config';
+import { DeleteResult } from 'typeorm';
 
 @Injectable()
 export class UserService {
-  public printHello(): string {
-    this.findOneAccount('jm');
+  public async test(): Promise<any> {
+    return await this.findOneByAccount('jm');
+  }
+
+  public printHello() {
     return 'HelloWorld!';
   }
 
@@ -289,10 +293,10 @@ export class UserService {
 
   // ------------------------------------- 유저 login api 끝 --------------------------------------------
 
-  public async findOneAccount(account: string) {
+  public async findOneByAccount(account: string) {
     console.log('findOneAccount 실행. account : '+ account +' ;;;');
     const dbResult = await Database.query(`SELECT * FROM user WHERE Account = '${account}'`);
-    console.log('findOne DBreturn : ' + dbResult[0] + " ;;;");
+    console.log("In FindOneAccount Function : " + dbResult);
     // let result: Array<string> = [];
     // if(dbResult[0] != undefined) {
     //   result = [dbResult[0].Account, dbResult[0].Password];

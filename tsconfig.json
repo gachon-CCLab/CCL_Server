@@ -27,7 +27,7 @@
       "@services/*": ["services/*"],
       "@utilities/*": ["utilities/*"],
       "@pipes/*": ["pipes/*"],
-      "@dtos/*": ["dtos/*"],
+      "@dtos/*": ["controllers/dtos/*"],
       "@middlewares/*": ["middlewares/*"]
     }
   }

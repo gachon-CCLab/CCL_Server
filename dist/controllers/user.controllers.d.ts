@@ -1,11 +1,12 @@
-import { JoinRequestDto } from '@dtos/join.request.dto';
+import { JoinRequestDto } from '@controllers/dtos/user.dtos/join.request.dto';
 import { UserService } from '@services/user.service';
-import { postSensorDataDto } from '@dtos/sensor.data.dto';
-import { userSendRpidDto } from '@dtos/user.send.rpid.dto';
-import { userLoginDto } from '@dtos/user.login.dto';
+import { postSensorDataDto } from '@controllers/dtos/user.dtos/sensor.data.dto';
+import { userSendRpidDto } from '@controllers/dtos/user.dtos/user.send.rpid.dto';
+import { LoginDto } from './dtos/auth.dtos/login.dto';
 export declare class UserController {
     private UserService;
     constructor(UserService: UserService);
+    test(): any;
     sayHello(): string;
     selectAllUsers(): Promise<any>;
     postRPID(userSendRpidDto: userSendRpidDto): Promise<any>;
@@ -13,5 +14,5 @@ export declare class UserController {
     selectAllSenorDate(): Promise<any>;
     getUserData(query: any): Promise<any>;
     join(JoinRequestDto: JoinRequestDto): Promise<any>;
-    userLogin(userLoginDto: userLoginDto): Promise<any>;
+    userLogin(userLoginDto: LoginDto): Promise<any>;
 }

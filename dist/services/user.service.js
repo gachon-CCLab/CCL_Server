@@ -11,8 +11,10 @@ const common_1 = require("@nestjs/common");
 const database_lib_1 = require("../libraries/database.lib");
 const logger_middleware_1 = require("../middlewares/logger.middleware");
 let UserService = class UserService {
+    async test() {
+        return await this.findOneByAccount('jm');
+    }
     printHello() {
-        this.findOneAccount('jm');
         return 'HelloWorld!';
     }
     async selectAllUser() {
@@ -242,10 +244,10 @@ let UserService = class UserService {
             return result;
         }
     }
-    async findOneAccount(account) {
+    async findOneByAccount(account) {
         console.log('findOneAccount 실행. account : ' + account + ' ;;;');
         const dbResult = await database_lib_1.default.query(`SELECT * FROM user WHERE Account = '${account}'`);
-        console.log('findOne DBreturn : ' + dbResult[0] + " ;;;");
+        console.log("In FindOneAccount Function : " + dbResult);
         return dbResult;
     }
 };

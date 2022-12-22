@@ -13,16 +13,19 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
-const join_request_dto_1 = require("../dtos/join.request.dto");
+const join_request_dto_1 = require("./dtos/user.dtos/join.request.dto");
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("../services/user.service");
-const sensor_data_dto_1 = require("../dtos/sensor.data.dto");
-const user_send_rpid_dto_1 = require("../dtos/user.send.rpid.dto");
-const user_login_dto_1 = require("../dtos/user.login.dto");
+const sensor_data_dto_1 = require("./dtos/user.dtos/sensor.data.dto");
+const user_send_rpid_dto_1 = require("./dtos/user.dtos/user.send.rpid.dto");
+const login_dto_1 = require("./dtos/auth.dtos/login.dto");
 const swagger_1 = require("@nestjs/swagger");
 let UserController = class UserController {
     constructor(UserService) {
         this.UserService = UserService;
+    }
+    test() {
+        return this.UserService.test();
     }
     sayHello() {
         return this.UserService.printHello();
@@ -49,6 +52,12 @@ let UserController = class UserController {
         return this.UserService.userLogin((userLoginDto));
     }
 };
+__decorate([
+    (0, common_1.Get)('/test'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Object)
+], UserController.prototype, "test", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Testing Server Connectin - It returns "HelloWorld!!"' }),
     (0, common_1.Get)(),
@@ -197,7 +206,7 @@ __decorate([
     (0, common_1.Post)('/login'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_login_dto_1.userLoginDto]),
+    __metadata("design:paramtypes", [login_dto_1.LoginDto]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "userLogin", null);
 UserController = __decorate([
