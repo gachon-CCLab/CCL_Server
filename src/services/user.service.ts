@@ -296,15 +296,8 @@ export class UserService {
   public async findOneByAccount(account: string) {
     console.log('findOneAccount 실행. account : '+ account +' ;;;');
     const dbResult = await Database.query(`SELECT * FROM user WHERE Account = '${account}'`);
-    console.log("In FindOneAccount Function : " + dbResult);
-    // let result: Array<string> = [];
-    // if(dbResult[0] != undefined) {
-    //   result = [dbResult[0].Account, dbResult[0].Password];
-    // }
-    // else {
-    //   result = null;
-    // }
-    // console.log('findOneResult : ' + result);
+    console.log("In FindOneAccount Function :");
+    console.log(dbResult);
     return dbResult;
   }
 }
