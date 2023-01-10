@@ -34,22 +34,24 @@ let AuthService = class AuthService {
     async validateUser(account, password) {
         console.log('AuthService - validateUser 실행');
         let userData = await this.UserService.findOneByAccount(account);
-        console.log('ValodatorUserResult :');
-        console.log(userData);
-        if (userData.account && userData.password == password) {
-            const { password } = userData, result = __rest(userData, ["password"]);
+        if (userData == null) {
+            console.log('null');
+            throw new common_1.BadRequestException('There is no account ' + account);
+        }
+        if (account == userData[0].Account && password == userData[0].Password) {
+            const _a = userData[0], { Password } = _a, result = __rest(_a, ["Password"]);
             const accessToken = await this.JwtService.sign(result);
             result['token'] = accessToken;
             return result;
         }
-        return null;
+        else {
+            throw new common_1.UnauthorizedException('Cannot login - Please check your ID and Password');
+        }
     }
     async jwtLogin(LoginDto) {
         console.log('AuthService - jwtLogin 실행');
         const { account, password } = LoginDto;
-        console.log("account = " + account);
-        console.log('password = ' + password);
-        return this.validateUser;
+        return await this.validateUser(account, password);
     }
     async authTest(LoginDto) {
         console.log('authTest 실행');

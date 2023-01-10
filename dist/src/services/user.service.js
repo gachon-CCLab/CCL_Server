@@ -12,7 +12,8 @@ const database_lib_1 = require("../libraries/database.lib");
 const logger_middleware_1 = require("../middlewares/logger.middleware");
 let UserService = class UserService {
     async test() {
-        return await this.findOneByAccount('jm');
+        const result = await this.findOneByAccount('jm');
+        return result;
     }
     printHello() {
         return 'HelloWorld!';
@@ -248,7 +249,8 @@ let UserService = class UserService {
         console.log('findOneAccount 실행. account : ' + account + ' ;;;');
         const dbResult = await database_lib_1.default.query(`SELECT * FROM user WHERE Account = '${account}'`);
         console.log("In FindOneAccount Function :");
-        console.log(dbResult);
+        if (dbResult[0] == undefined)
+            return null;
         return dbResult;
     }
 };

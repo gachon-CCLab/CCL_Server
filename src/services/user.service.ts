@@ -9,7 +9,8 @@ import { DeleteResult } from 'typeorm';
 @Injectable()
 export class UserService {
   public async test(): Promise<any> {
-    return await this.findOneByAccount('jm');
+    const result = await this.findOneByAccount('jm');
+    return result;
   }
 
   public printHello() {
@@ -297,7 +298,7 @@ export class UserService {
     console.log('findOneAccount 실행. account : '+ account +' ;;;');
     const dbResult = await Database.query(`SELECT * FROM user WHERE Account = '${account}'`);
     console.log("In FindOneAccount Function :");
-    console.log(dbResult);
+    if (dbResult[0] == undefined) return null;
     return dbResult;
   }
 }

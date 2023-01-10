@@ -3,6 +3,6 @@ import { LoginDto } from "./dtos/auth.dtos/login.dto";
 export declare class AuthController {
     private AuthService;
     constructor(AuthService: AuthService);
-    jwtLogin(LoginDto: LoginDto): Promise<(account: string, password: string) => Promise<any>>;
+    jwtLogin(LoginDto: LoginDto): Promise<any>;
     authTest(LoginDto: LoginDto): Promise<any>;
 }
