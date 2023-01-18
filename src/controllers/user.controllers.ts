@@ -1,10 +1,10 @@
-import { JoinRequestDto } from '@controllers/dtos/user.dtos/join.request.dto';
+import { JoinRequestDto } from 'dtos/user.dtos/join.request.dto';
 import { Body, Controller, Get, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { UserService } from '@services/user.service';
 
-import { postSensorDataDto } from '@controllers/dtos/user.dtos/sensor.data.dto';
-import { userSendRpidDto } from '@controllers/dtos/user.dtos/user.send.rpid.dto';
-import { LoginDto } from './dtos/auth.dtos/login.dto';
+import { postSensorDataDto } from 'dtos/user.dtos/sensor.data.dto';
+import { userSendRpidDto } from 'dtos/user.dtos/user.send.rpid.dto';
+import { LoginDto } from '../dtos/auth.dtos/login.dto';
 import { ApiOperation, ApiParam, ApiProperty, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('USER')
